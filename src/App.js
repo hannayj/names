@@ -1,23 +1,33 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Name from './components/Name'
+import nameService from './services/names'
 
-const App = ({ names }) => {
-
-  const [nameList, setNameList] = useState(names)
+const App = () => {
+  const [initialOrder, setInitialOrder] = useState([])
+  const [names, setNames] = useState([])
   const [findName, setFindName] = useState('')
 
+  useEffect(() => {
+    nameService
+      .getAll()
+      .then(initialNames => {
+        setNames(initialNames)
+        setInitialOrder(initialNames)
+      })
+  }, [])
+
   const handleSortClick = () => {
-    const sortedbyAmount = [...nameList]
+    const sortedbyAmount = [...names]
     sortedbyAmount.sort((a, b) => b.amount - a.amount)
     //console.log(sortedNames)
-    setNameList(sortedbyAmount)
+    setNames(sortedbyAmount)
   }
 
   const handleAlphabeticalClick = () => {
-    const sortedbyName = [...nameList]
+    const sortedbyName = [...names]
     sortedbyName.sort(compare)
     //console.log(sortedbyName)
-    setNameList(sortedbyName)
+    setNames(sortedbyName)
   }
 
   function compare(a, b) {
@@ -34,7 +44,7 @@ const App = ({ names }) => {
   }
 
   const handleClearAllFilters = () => {
-    setNameList(names)
+    setNames(initialOrder)
     setFindName('')
   }
 
@@ -42,10 +52,10 @@ const App = ({ names }) => {
     setFindName(e.target.value)
   }
 
-  const nameToShow = findName === '' 
-    ? nameList 
-    : nameList.filter(n => n.name.toLowerCase().includes(findName.toLowerCase()))
-    //console.log('name', nameToShow)
+  const nameToShow = findName === ''
+    ? names
+    : names.filter(n => n.name.toLowerCase().includes(findName.toLowerCase()))
+  //console.log('name', nameToShow)
 
   return (
     <div>
@@ -62,7 +72,7 @@ const App = ({ names }) => {
       {nameToShow.map((name, i) =>
         <Name key={i} name={name} />
       )}
-      <p>Total amount of all the names is {nameList.reduce((previous, current) => previous + current.amount, 0)}</p>
+      <p>Total amount of all the names is {names.reduce((previous, current) => previous + current.amount, 0)}</p>
 
     </div>
   )
