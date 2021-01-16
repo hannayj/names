@@ -60,18 +60,21 @@ const App = () => {
   return (
     <div>
       <h1>Names</h1>
-      <button onClick={handleSortClick}>Sort by amount</button>
-      <button onClick={handleAlphabeticalClick}>Sort by name</button>
-      <button onClick={handleClearAllFilters}>Clear all filters</button>
+      <button className='button' onClick={handleSortClick}>Sort by amount</button>
+      <button className='button' onClick={handleAlphabeticalClick}>Sort by name</button>
+      <button className='button' onClick={handleClearAllFilters}>Clear all filters</button>
       <p>See amount of specific name by typing it below:</p>
       <input
+        className='input'
         value={findName}
         onChange={handleFindName}
         placeholder='Type here'
       />
-      {nameToShow.map((name, i) =>
-        <Name key={i} name={name} />
-      )}
+      {nameToShow.length === 0
+        ? <p>No names found try again</p>
+        : nameToShow.map((name, i) =>
+          <Name key={i} name={name} />
+        )}
       <p>Total amount of all the names is {names.reduce((previous, current) => previous + current.amount, 0)}</p>
 
     </div>
