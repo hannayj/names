@@ -9,4 +9,4 @@ In order to run the app in development mode
 2. Start server: npm run dev
 3. Start front-end: npm start
 
-The application is also in [Heroku](https://mighty-earth-09954.herokuapp.com). 
+The application used to be in Heroku, but then they started asking money for it. 
